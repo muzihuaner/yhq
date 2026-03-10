@@ -1,11 +1,167 @@
-<!DOCTYPE html><html lang=zh-CN><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>加载中</title><link rel=icon href=https://img.jutuike.com/kuaizhan/dth5/v2.1.8/static/favicon.ico><script>var coverSupport = 'CSS' in window && typeof CSS.supports === 'function' && (CSS.supports('top: env(a)') || CSS
-				.supports('top: constant(a)'))
-			document.write(
-				'<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' +
-				(coverSupport ? ', viewport-fit=cover' : '') + '" />')</script><link rel=stylesheet href=https://img.jutuike.com/kuaizhan/dth5/v2.4.6/static/index.63b34199.css></head><body><noscript><strong>Please enable JavaScript to continue.</strong></noscript><div id=app></div><script src=https://img.jutuike.com/kuaizhan/dth5/v2.4.6/static/js/chunk-vendors.3d7555fd.js></script><script src=https://img.jutuike.com/kuaizhan/dth5/v2.4.6/static/js/index.ad488c31.js></script></body><script>var userAgent = navigator.userAgent;
-		if (String(navigator.userAgent.toLowerCase().match(/MicroMessenger/i)) === "micromessenger") {
-			document.write('<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"><\/script>');
-		}
-		if (!/miniProgram/i.test(userAgent) && !/micromessenger/i.test(userAgent)) {
-			document.write('<script type="text/javascript" src="https://turing.captcha.qcloud.com/TCaptcha.js"><\/script>');
-		}</script></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快点惠 - 领券省钱神器</title>
+    
+    <meta name="keywords" content="快点惠,外卖红包,美团优惠券,饿了么红包,话费充值,打车优惠,滴滴优惠券,加油优惠,电影票立减,肯德基优惠券,麦当劳优惠,省钱助手">
+    
+    <meta name="description" content="快点惠是一个全能省钱优惠券聚合平台。每日更新美团/饿了么大额外卖红包，提供电影票立减，打车/加油优惠，更有肯德基、麦当劳、星巴克等连锁餐饮特惠。领券下单，一年省下几千元！">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="快点惠 - 领券省钱神器">
+    <meta property="og:description" content="天天领外卖红包，吃喝玩乐全都有优惠！">
+    <meta property="og:url" content="https://yhq.quickso.cn/">
+    <meta property="og:site_name" content="快点惠">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        #container {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100vh;
+            background: #fff;
+            font-size: 18px;
+            color: #666;
+        }
+        .ad-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF5252 100%);
+            color: white;
+            padding: 12px 16px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.5;
+            z-index: 9999;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.3s ease-out;
+        }
+        .ad-banner-title {
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .ad-banner-content {
+            font-size: 13px;
+            opacity: 0.95;
+        }
+        .ad-banner-close {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 20px;
+            line-height: 24px;
+            opacity: 0.8;
+        }
+        .ad-banner-close:hover {
+            opacity: 1;
+        }
+        #container {
+            padding-bottom: 0;
+        }
+        #container.has-banner {
+            padding-bottom: 70px;
+        }
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="loading">加载中...</div>
+    </div>
+    
+    <div id="adBanner" class="ad-banner" style="display: none;">
+        <span class="ad-banner-close" onclick="closeAdBanner()">&times;</span>
+        <div class="ad-banner-title">🎁 快点惠 - 领券省钱神器</div>
+        <div class="ad-banner-content">⚠️ 本服务仅支持在微信内使用，请在微信中打开此链接</div>
+    </div>
+
+    <script>
+        // 关闭广告条幅
+        function closeAdBanner() {
+            const adBanner = document.getElementById('adBanner');
+            const container = document.getElementById('container');
+            adBanner.style.display = 'none';
+            container.classList.remove('has-banner');
+            // 保存用户关闭状态到本地存储
+            sessionStorage.setItem('adBannerClosed', 'true');
+        }
+        
+        (function() {
+            // 检测是否在微信中
+            function isInWeChat() {
+                return /MicroMessenger/.test(navigator.userAgent);
+            }
+
+            // 目标链接
+            const targetUrl = 'https://31etpwgn.jutuike.cn/#/?code=31etpwGn';
+            
+            // 微信UserAgent
+            const wechatUA = 'Mozilla/5.0 (Linux; Android 9; SM-A205U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Mobile Safari/537.36 MicroMessenger/8.0.0.5';
+
+            const container = document.getElementById('container');
+            const adBanner = document.getElementById('adBanner');
+
+            if (isInWeChat()) {
+                // 在微信中：直接跳转链接
+                window.location.href = targetUrl;
+            } else {
+                // 不在微信中：使用微信UA通过iframe访问
+                container.innerHTML = '<iframe src="' + targetUrl + '"></iframe>';
+                
+                // 显示广告条幅
+                if (!sessionStorage.getItem('adBannerClosed')) {
+                    adBanner.style.display = 'block';
+                    container.classList.add('has-banner');
+                }
+                
+                // 修改请求头（伪造微信UA）
+                // 注意：XHR的User-Agent修改在浏览器中受限，但iframe会继承页面的UA
+                // 这里通过服务端代理或其他方式可以实现UA伪造
+                
+                // 如果需要更强的UA伪造，可以使用以下方式：
+                Object.defineProperty(navigator, 'userAgent', {
+                    get: function() {
+                        return wechatUA;
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
